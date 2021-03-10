@@ -5,7 +5,7 @@ import { TagBoxAsync } from 'react-tag-box'
  
 // Mock server data. This would normally be in your database.
 const sampleTags = List(
-  ['Java', 'Python', 'C', 'C++', 'React', 'Ruby', 'Node', 'PHP', 'Javascript'].map(t => ({
+  ['','Java', 'Python', 'C', 'C++', 'React', 'Ruby', 'Node', 'PHP', 'Javascript'].map(t => ({
     label: t,
     value: t
   }))
@@ -13,10 +13,13 @@ const sampleTags = List(
  
 // Mock http request. This would normally make a request to your server to fetch matching tags.
 const fetch = input => {
+  console.log(input.toLowerCase())
+    const filtered = sampleTags.filter(t=> t.label.toLowerCase().includes(input.toLowerCase()))
+    console.log(sampleTags.filter(t=> t.label.toLowerCase().includes(input.toLowerCase())).toJS())
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(sampleTags.filter(t => t.label.includes(input)).toJS())
-    }, 1500)
+      resolve(sampleTags.filter(t=> t.value.toString().toLowerCase().includes(input.toString().toLowerCase())).toJS())
+    }, 500)
   })
 }
  
@@ -36,15 +39,17 @@ export default class Async extends Component {
       this.setState({
         selected: selected.push(newTag)
       })
+      this.props.onSkillAdd(tag.label)
     }
  
     const remove = tag => {
       this.setState({
         selected: selected.filter(t => t.value !== tag.value)
       })
+      this.props.onSkillRemove(tag.label)
     }
  
-    const placeholder = selected.isEmpty() ? '' :
+    const placeholder = selected.isEmpty() ? 'Skills' :
       "Use the backspace key to delete the last tag"
  
     return (
@@ -55,6 +60,7 @@ export default class Async extends Component {
         removeTag={remove}
         backspaceDelete={true}
         placeholder={placeholder}
+        
       />
     )
   }

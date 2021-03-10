@@ -5,6 +5,7 @@ import "./style.css";
 export default function ViewScreen() {
   const location = useLocation();
   //const history = useHistory();
+  console.log(location);
   const {
     education,
     experience,
@@ -14,27 +15,32 @@ export default function ViewScreen() {
     email,
     address,
   } = location.state.profile;
+  console.log(experience);
   return (
     <div className="viewMain">
       <div className="viewContent">
         <div className="details1">
           <h3 style={{ color: "darkblue" }}>{name}</h3>
-          <b>{email}</b>
-          <br />
-          <b>{phone}</b>
-          <br />
-          <b>{address}</b>
+          <i>{email}</i>
+          <i>{phone}</i>
+          <i>{address}</i>
         </div>
         <div className="details2">
           <h5>Education</h5>
           {education.map((items) => (
-            <b>{items.company}</b>
+            <i>{items.institute}</i>
           ))}
         </div>
         <div className="details3">
-            <h5>Experience</h5>
+          <h5>Experience</h5>
           {experience.map((items) => (
-            <b>{items.institute}</b>
+            <i>{items.company}</i>
+          ))}
+        </div>
+        <div className="details4">
+          <h5>Skills</h5>
+          {skills.map((items) => (
+            <i>{items}</i>
           ))}
         </div>
       </div>

@@ -12,39 +12,32 @@ export default function CreateScreen() {
   const [education, setEducation] = useState([]);
   const [experience, setExperience] = useState([]);
   const [skills, setSkills] = useState([]);
-  const [company, setCompany] = useState()
-  const [institute, setInstitute] = useState()
-
+  const [company, setCompany] = useState();
+  const [institute, setInstitute] = useState();
 
   const history = useHistory();
 
-  // handle input change
-  // const handleInputChange = (e, index) => {
-  //   const { name, value } = e.target;
-  //   const list = [...educaation];
-  //   list[index][name] = value;
-  //   setInputList(list);
-  // };
-
   // handle click event of the Add button
   const handleAddClickEducation = () => {
-    setEducationNo(educationNo.concat([1]))
-    setEducation([...education, {institute:institute}]);
+    setEducationNo(educationNo.concat([1]));
+    setEducation([...education, { institute: institute }]);
   };
   const handleAddClickExperience = () => {
-    setExperienceNo(experienceNo.concat([1]))
-    setExperience([...experience, {company:company}]);
+    console.log(experience);
+    setExperienceNo(experienceNo.concat([1]));
+    setExperience((prev) => [...prev, { company: company }]);
   };
-  // const handleAddClickSkill = () => {
-  //   setSkill([...skill, 1]);
-  // };
+  const skillAdd = (skills) => {
+    setSkills((prev) => [...prev, skills]);
+  };
 
-  const skillAdd = (skill) => {
-    setSkills((prev) => [...prev, skill]);
-  };
+
 
   return (
     <div className="container">
+      <div className="heading">
+        <h2>ENTER DETAILS</h2>
+      </div>
       <form>
         <div className="form-group">
           <label htmlFor="name">Name</label>
@@ -89,22 +82,22 @@ export default function CreateScreen() {
           />
         </div>
 
-        {educationNo.map((x, i) => {
-          return (
-            <div>
-              <div className="form-group">
-                <label htmlFor="education">Education</label>
+        <div className="form-group">
+          <label htmlFor="education">Education</label>
+          {educationNo.map((x, i) => {
+            return (
+              <div>
+                <br/>
                 <input
                   type="text"
                   className="form-control"
                   id="education"
                   placeholder="Education"
-                  onChange={e=>setInstitute(e.target.value)}
+                  onChange={(e) => setInstitute(e.target.value)}
                 />
-              </div>
-              <div>
                 {educationNo.length - 1 === i && (
                   <button
+                  style={{ marginTop: "10px" }}
                     type="button"
                     className="btn btn-outline-primary btn-sm"
                     onClick={handleAddClickEducation}
@@ -113,26 +106,27 @@ export default function CreateScreen() {
                   </button>
                 )}
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
 
-        {experienceNo.map((x, i) => {
-          return (
-            <div>
-              <div className="form-group">
-                <label htmlFor="experience">Experience</label>
+        <div className="form-group">
+          <label htmlFor="experience">Experience</label>
+          {experienceNo.map((x, i) => {
+            return (
+              <div>
+                {/*    */}
+                <br />
                 <input
                   type="text"
                   className="form-control"
                   id="experience"
                   placeholder="Experience"
-                  onClick={e=>setCompany(e.target.value)}
+                  onChange={(e) => setCompany(e.target.value)}
                 />
-              </div>
-              <div>
                 {experienceNo.length - 1 === i && (
                   <button
+                    style={{ marginTop: "10px" }}
                     type="button"
                     className="btn btn-outline-primary btn-sm"
                     onClick={handleAddClickExperience}
@@ -141,61 +135,56 @@ export default function CreateScreen() {
                   </button>
                 )}
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
 
         <div className="form-group">
           <label htmlFor="skill" style={{ marginBottom: 10 }}>
-            Skill
+            Skills
           </label>
           <Tag onSkillAdd={skillAdd} />
         </div>
-        {/* {skill.map((x, i) => {
-          return (
-            <div>
-              <div className="form-group">
-                <label htmlFor="skill">Skill</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="skill"
-                  placeholder="Skill"
-                />
-             </div><div>
-                {skill.length - 1 === i && (
-                  <button type="button" className="btn btn-outline-primary btn-sm" onClick={handleAddClickSkill}>+</button>
-                )}
-              </div>
-            </div>
-          );
-        })} */}
         <br />
+
         <button
           type="submit"
           className="btn btn-primary"
           onClick={(e) => {
             e.preventDefault();
-            // console.log(
-            //   name,
-            //   email,
-            //   address,
-            //   phone,
-            //   education,
-            //   experience,
-            //   skills
-            // );
-            history.push("/view", {
-              profile: {
-                name: name,
-                email: email,
-                phone: phone,
-                address: address,
-                education: education,
-                experience: experience,
-                skills: skills,
-              },
-            });
+            console.log(
+              name,
+              email,
+              address,
+              phone,
+              education,
+              experience,
+              skills
+            );
+            if (
+              name &&
+              email &&
+              address &&
+              education.length !== 0 &&
+              experience.length !== 0 &&
+              skills.length !== 0
+            ) {
+              history.push("/view", {
+                profile: {
+                  name: name,
+                  email: email,
+                  phone: phone,
+                  address: address,
+                  education: education,
+                  experience: experience,
+                  skills: skills,
+                },
+              });
+            } else {
+              alert(
+                "Please fill all details,please click + button to add experience and education"
+              );
+            }
           }}
         >
           Create My Resume
